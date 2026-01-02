@@ -1,0 +1,84 @@
+File use:
+app/
+  Models/
+    Facility.php
+    FacilityBooking.php
+  Http/
+    Controllers/
+      Admin/
+        FacilityController.php
+        FacilityBookingController.php
+      Api/
+        FacilityAvailabilityController.php
+    Requests/
+      FacilityStoreRequest.php
+      FacilityUpdateRequest.php
+      BookingStoreRequest.php
+      BookingUpdateRequest.php
+  Policies/
+    FacilityPolicy.php
+    FacilityBookingPolicy.php
+  Services/
+    Facility/
+      AvailabilityService.php
+      BookingService.php
+      Overlap.php
+resources/views/
+  admin/facilities/*.blade.php
+  admin/bookings/*.blade.php
+routes/
+  web.php
+  api.php
+Be careful: don’t put overlap logic inside Blade/Controller. Put it in AvailabilityService.
+
+Model (M)
+Represents DB tables + business rules
+Lives in: app/Models/*
+
+View (V)
+UI templates (HTML)
+Lives in: resources/views/* (Blade)
+
+Controller (C)
+Handles request → calls models/services → returns view/json
+Lives in: app/Http/Controllers/*
+
+Typical request flow
+Route -> Controller -> (Model/Service) -> View/JSON
+
+ORM in Laravel (Eloquent)
+Eloquent maps:
+PHP class ↔ DB table
+Object properties ↔ table columns
+Relationships ↔ foreign keys
+
+A) Create migration + model
+php artisan make:model xxx -m
+Edit migration in database/migrations/*
+Run : php artisan migrate
+
+B) Model (ORM mapping)
+app/Models/*
+
+C) Controller (C)
+php artisan make:controller xxxController --resource
+app/Http/Controllers/*
+
+D) Routes (connect everything)
+routes/web.php
+
+E) Views (V)
+Create folder and php:
+resources/views/xxx/*
+
+That’s full MVC:
+Route sends request to Controller
+Controller uses Model (Eloquent ORM) to fetch/save
+Controller returns View (Blade)
+
+MVC “best practice” upgrade, clean
+When controller gets fat, move logic out
+php artisan make:class xxx/xxx   //will create in app/xxx/xxx
+Still MVC, just cleaner: app/*
+
+Eloquent relationships
